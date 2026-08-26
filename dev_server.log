@@ -1,0 +1,62 @@
+
+> next-app@0.1.0 dev
+> next dev
+
+▲ Next.js 16.3.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+- Environments: .env
+✓ Ready in 602ms
+✓ Running next.config.ts took 55ms
+
+ GET / 200 in 854ms (next.js: 339ms, application-code: 516ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <FloatingDelayGroup delay={{open:0, ...}} timeoutMs={400}>
+      <SidebarProvider>
+        <div data-slot="sidebar-wr..." style={{...}} className="group/side...">
+          <div className="flex min-h...">
+            <Sidebar>
+            <div className="flex flex-...">
+              <Topbar>
+                <header className="sticky top...">
+                  <div className="flex h-14 ...">
+                    <SidebarTrigger>
+                    <div className="flex flex-...">
+                      <form className="ml-auto fl...">
+                        <div className="relative">
+                          <svg>
+                          <Input>
+                            <Input type="search" data-slot="input" className="h-8 w-full..." placeholder="Buscar caç...">
+                              <FieldControl ref={null} type="search" data-slot="input" className="h-8 w-full..." ...>
+                                <input
+                                  id="base-ui-_R_j6lb_"
+                                  disabled={false}
+                                  name={undefined}
+                                  ref={function}
+                                  aria-labelledby={undefined}
+                                  autoFocus={false}
+                                  defaultValue={undefined}
+                                  onChange={function}
+                                  onFocus={function}
+                                  onBlur={function}
+                                  onKeyDown={function}
+                                  type="search"
+                                  data-slot="input"
+                                  placeholder="Buscar caçambas, clientes, obras..."
+                                  className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 p..."
+-                                 style={{caret-color:"transparent"}}
+                                >
+                      ...
+              ...
