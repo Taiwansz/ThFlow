@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,80 @@ generator client {
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  id        String   @id @default(cuid())
+  nome      String
+  email     String?  @unique
+  telefone  String?
+  documento String?  @unique // CPF or CNPJ
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  obras     Obra[]
+  leads     Lead[]
+}
+
+model Obra {
+  id          String     @id @default(cuid())
+  clienteId   String
+  cliente     Cliente    @relation(fields: [clienteId], references: [id])
+  endereco    String
+  cidade      String
+  estado      String
+  cep         String?
+  responsavel String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  operacoes   Operacao[]
+}
+
+model Cacamba {
+  id         String     @id @default(cuid())
+  numero     String     @unique
+  capacidade Float
+  status     String     @default("DISPONIVEL") // DISPONIVEL, LOCADA, MANUTENCAO
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  operacoes  Operacao[]
+}
+
+model Operacao {
+  id            String    @id @default(cuid())
+  tipo          String    // ENTREGA, RETIRADA, TROCA
+  obraId        String
+  obra          Obra      @relation(fields: [obraId], references: [id])
+  cacambaId     String
+  cacamba       Cacamba   @relation(fields: [cacambaId], references: [id])
+  dataAgendada  DateTime
+  dataRealizada DateTime?
+  status        String    @default("PENDENTE") // PENDENTE, EM_ANDAMENTO, CONCLUIDO, CANCELADO
+  motorista     String?
+  mtrId         String?
+  observacoes   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  clienteId String?
+  cliente   Cliente? @relation(fields: [clienteId], references: [id])
+  nome      String
+  email     String?
+  telefone  String?
+  status    String   @default("NOVO") // NOVO, EM_NEGOCIACAO, GANHO, PERDIDO
+  valor     Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LogAuditoria {
+  id        String   @id @default(cuid())
+  entidade  String
+  entidadeId String
+  acao      String
+  detalhes  String?
+  usuario   String
+  createdAt DateTime @default(now())
 }
